@@ -1,10 +1,10 @@
 package me.fevralev.bookofrecepiesnew.model;
 
 public class Recipe {
-    String title;
-    int cookingTime;
-    Ingredient[] ingredients;
-    String[] steps;
+    private String title;
+    private int cookingTime;
+    private Ingredient[] ingredients;
+    private String[] steps;
 
     public Recipe(String title, int cookingTime, Ingredient[] ingredients, String[] steps) {
         this.title = title;

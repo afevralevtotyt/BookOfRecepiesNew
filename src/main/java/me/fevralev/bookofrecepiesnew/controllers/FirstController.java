@@ -12,21 +12,23 @@ public class FirstController {
     public FirstController(CounterService counterService) {
         this.counterService = counterService;
     }
-    @GetMapping("/greetings")
 
-    public String showGreetings(@RequestParam(required = true) String name, @RequestParam(required = false) String surname){
+    @GetMapping("/greetings")
+    public String showGreetings(@RequestParam(required = true) String name, @RequestParam(required = false) String surname) {
         return "Привет, " + name + " " + surname + "!";
     }
+
     @GetMapping()
-    public String StartPage(){
+    public String StartPage() {
         return "Приложение запущено! ";
     }
+
     @GetMapping("/info")
-    public String Description(){
+    public String Description() {
         return "<center>Студент Февралев Антон.\n" +
                 "<br>Проект \"Книга рецептов бабы Любы\".\n" +
                 "Проект создан 08.12.2022." +
                 "\nДанный проект предназначен для начинающих кулинаров.\n" +
-                "Постоен на фреймворке Spring. Язык программирования Java v17. Собран сборщиком Maven. Число запросов "+ counterService.getRequestCount();
+                "Постоен на фреймворке Spring. Язык программирования Java v17. Собран сборщиком Maven. Число запросов " + counterService.getRequestCount();
     }
 }

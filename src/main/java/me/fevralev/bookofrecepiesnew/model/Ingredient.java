@@ -1,9 +1,9 @@
 package me.fevralev.bookofrecepiesnew.model;
 
 public class Ingredient {
-    String title;
-    int count;
-    String measureUnit;
+    private String title;
+    private int count;
+    private String measureUnit;
 
     public Ingredient(String title, int count, String measureUnit) {
         this.title = title;
