@@ -20,4 +20,7 @@ public interface RecipeService {
 
     Map<Integer, Recipe> getAll();
 
+    HashSet<Recipe> getRecipeByIngredientId(int id);
+
+    Recipe searchBySomeIngredients(Ingredient[] ingredients);
 }

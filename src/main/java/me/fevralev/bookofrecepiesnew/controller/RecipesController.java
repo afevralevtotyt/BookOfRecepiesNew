@@ -26,6 +26,17 @@ public class RecipesController {
         return ResponseEntity.ok(recipe);
     }
 
+    @PostMapping("/search")
+    public ResponseEntity createRecipe(@RequestBody Ingredient[] ingredients) {
+        Recipe recipe = recipeService.searchBySomeIngredients(ingredients);
+        if (recipe==null){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(recipe);
+
+    }
+
+
 
     @GetMapping("{id}")
     public ResponseEntity getUser(@PathVariable int id) {
@@ -43,6 +54,14 @@ public class RecipesController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(book);
+    }
+    @GetMapping("/search/{id}")
+    public ResponseEntity getRecipeByIngredientId(@PathVariable int id){
+        HashSet<Recipe> list = recipeService.getRecipeByIngredientId(id);
+        if (list.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(list);
     }
 
     @PutMapping("{id}")

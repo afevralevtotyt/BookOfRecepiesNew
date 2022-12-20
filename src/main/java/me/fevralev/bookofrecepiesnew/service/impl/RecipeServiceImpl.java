@@ -48,6 +48,26 @@ public class RecipeServiceImpl implements RecipeService {
         }
         return recipeBook;
     }
+    @Override
+    public HashSet<Recipe> getRecipeByIngredientId(int id){
+        HashSet<Recipe> list = new HashSet<>();
+        Ingredient ingredient = IngredientServiceImpl.ingredientBook.get(id);
+        for (Recipe recipe: recipeBook.values()){
+            for (Ingredient ingredient1: recipe.getIngredients()){
+                if (ingredient1.equals(ingredient)) {
+                    list.add(recipe);}
+                }
+            }return list;}
+    @Override
+    public Recipe searchBySomeIngredients(Ingredient[] ingredients){
+        for (Recipe recipe: recipeBook.values()){
+            ArrayList<Ingredient> list = new ArrayList<>(List.of(recipe.getIngredients()));
+            if (list.containsAll(List.of(ingredients))){
+                return recipe;
+            }
+        }
+        return null;
+    }
 
+    }
 
-}

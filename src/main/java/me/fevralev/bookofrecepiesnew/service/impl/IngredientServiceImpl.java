@@ -10,7 +10,7 @@ import java.util.Map;
 @Service
 public class IngredientServiceImpl implements IngredientService {
     private int id = 0;
-    private Map<Integer, Ingredient> ingredientBook = new HashMap<>();
+    public static Map<Integer, Ingredient> ingredientBook = new HashMap<>();
 
     @Override
     public Ingredient add(Ingredient ingr) {
