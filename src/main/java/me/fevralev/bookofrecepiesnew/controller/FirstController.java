@@ -1,6 +1,6 @@
-package me.fevralev.bookofrecepiesnew.controllers;
+package me.fevralev.bookofrecepiesnew.controller;
 
-import me.fevralev.bookofrecepiesnew.services.CounterService;
+import me.fevralev.bookofrecepiesnew.service.CounterService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;

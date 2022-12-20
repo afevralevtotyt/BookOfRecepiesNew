@@ -1,4 +1,4 @@
-package me.fevralev.bookofrecepiesnew.services;
+package me.fevralev.bookofrecepiesnew.service;
 
 public interface CounterService {
     int getRequestCount();

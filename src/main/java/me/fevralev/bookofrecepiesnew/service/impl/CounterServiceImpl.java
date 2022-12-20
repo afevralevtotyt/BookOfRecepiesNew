@@ -1,7 +1,7 @@
-package me.fevralev.bookofrecepiesnew.services.impl;
+package me.fevralev.bookofrecepiesnew.service.impl;
 
 
-import me.fevralev.bookofrecepiesnew.services.CounterService;
+import me.fevralev.bookofrecepiesnew.service.CounterService;
 import org.springframework.stereotype.Service;
 
 @Service
