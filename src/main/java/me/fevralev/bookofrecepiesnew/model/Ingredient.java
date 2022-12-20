@@ -42,16 +42,11 @@ public class Ingredient {
         if (this == o) return true;
         if (!(o instanceof Ingredient that)) return false;
 
-        if (count != that.count) return false;
-        if (!Objects.equals(title, that.title)) return false;
-        return Objects.equals(measureUnit, that.measureUnit);
+        return Objects.equals(title, that.title);
     }
 
     @Override
     public int hashCode() {
-        int result = title != null ? title.hashCode() : 0;
-        result = 31 * result + count;
-        result = 31 * result + (measureUnit != null ? measureUnit.hashCode() : 0);
-        return result;
+        return title != null ? title.hashCode() : 0;
     }
 }
