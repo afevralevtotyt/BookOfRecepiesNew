@@ -4,10 +4,10 @@ import me.fevralev.bookofrecepiesnew.model.Ingredient;
 import me.fevralev.bookofrecepiesnew.model.Recipe;
 import me.fevralev.bookofrecepiesnew.service.impl.IngredientServiceImpl;
 import me.fevralev.bookofrecepiesnew.service.impl.RecipeServiceImpl;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 
 @RestController
@@ -45,12 +45,12 @@ public class RecipesController {
     }
 
     @GetMapping
-    public ResponseEntity getAll() {
-        ArrayList<Recipe> book = recipeService.getAll();
-        if (book.isEmpty()) {
-            return ResponseEntity.notFound().build();
+    public Page<Recipe> getAll(@RequestParam int currentPage, @RequestParam int pages) {
+        Page<Recipe> page  = recipeService.getAll(currentPage, pages);
+        if (page.isEmpty()) {
+            return null;
         }
-        return ResponseEntity.ok(book);
+        return page;
     }
     @GetMapping("/search/{id}")
     public ResponseEntity getRecipeByIngredientId(@PathVariable int id){

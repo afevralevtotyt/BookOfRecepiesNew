@@ -3,8 +3,8 @@ package me.fevralev.bookofrecepiesnew.service;
 
 import me.fevralev.bookofrecepiesnew.model.Ingredient;
 import me.fevralev.bookofrecepiesnew.model.Recipe;
+import org.springframework.data.domain.Page;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 
 public interface RecipeService {
@@ -18,7 +18,7 @@ public interface RecipeService {
 
     Recipe delete(int id);
 
-    ArrayList<Recipe> getAll();
+    Page<Recipe> getAll(int currentPage, int pages);
 
     HashSet<Recipe> getRecipeByIngredientId(int id);
 

@@ -3,11 +3,15 @@ package me.fevralev.bookofrecepiesnew.service.impl;
 import me.fevralev.bookofrecepiesnew.model.Ingredient;
 import me.fevralev.bookofrecepiesnew.model.Recipe;
 import me.fevralev.bookofrecepiesnew.service.RecipeService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
 @Service
+
 public class RecipeServiceImpl implements RecipeService {
     private int id = 0;
     private Map<Integer, Recipe> recipeBook = new HashMap<>();
@@ -42,7 +46,7 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
-    public ArrayList<Recipe> getAll() {
+    public Page<Recipe> getAll(int currentPage, int pages) {
         ArrayList<Recipe> recipeList = new ArrayList<>();
         if (recipeBook.isEmpty()) {
             return null;
@@ -50,7 +54,9 @@ public class RecipeServiceImpl implements RecipeService {
         for (Recipe recipe: recipeBook.values()){
             recipeList.add(recipe);
         }
-        return recipeList;
+        PageImpl<Recipe> recipes;
+        recipes = new PageImpl<Recipe>(recipeList, PageRequest.of(currentPage, pages), recipeList.size());
+        return recipes;
     }
     @Override
     public HashSet<Recipe> getRecipeByIngredientId(int id){
