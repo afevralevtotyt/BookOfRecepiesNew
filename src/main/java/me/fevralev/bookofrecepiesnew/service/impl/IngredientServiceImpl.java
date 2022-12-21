@@ -4,6 +4,7 @@ import me.fevralev.bookofrecepiesnew.model.Ingredient;
 import me.fevralev.bookofrecepiesnew.service.IngredientService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,7 +25,7 @@ public class IngredientServiceImpl implements IngredientService {
     }
 
     @Override
-    public Ingredient editIngredient(int id, Ingredient ingredient) {
+    public Ingredient edit(int id, Ingredient ingredient) {
         if (ingredientBook.containsKey(id)) {
             ingredientBook.put(id, ingredient);
             return ingredient;
@@ -33,7 +34,7 @@ public class IngredientServiceImpl implements IngredientService {
     }
 
     @Override
-    public Ingredient deleteIngredient(int id) {
+    public Ingredient delete(int id) {
         if (ingredientBook.containsKey(id)) {
             return ingredientBook.remove(id);
         }
@@ -41,11 +42,15 @@ public class IngredientServiceImpl implements IngredientService {
     }
 
     @Override
-    public Map<Integer, Ingredient> getAll() {
+    public ArrayList<Ingredient> getAll() {
+        ArrayList<Ingredient> ingredients =new ArrayList<>();
         if (ingredientBook.isEmpty()) {
             return null;
         }
-        return ingredientBook;
+        for (Ingredient ingredient: ingredientBook.values()){
+            ingredients.add(ingredient);
+        }
+        return ingredients;
     }
 
 }

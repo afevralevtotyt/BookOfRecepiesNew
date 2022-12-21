@@ -4,8 +4,8 @@ package me.fevralev.bookofrecepiesnew.service;
 import me.fevralev.bookofrecepiesnew.model.Ingredient;
 import me.fevralev.bookofrecepiesnew.model.Recipe;
 
+import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Map;
 
 public interface RecipeService {
 
@@ -14,11 +14,11 @@ public interface RecipeService {
 
     Recipe getById(int id);
 
-    Recipe editRecipe(int id, Recipe recipe);
+    Recipe edit(int id, Recipe recipe);
 
-    Recipe deleteRecipe(int id);
+    Recipe delete(int id);
 
-    Map<Integer, Recipe> getAll();
+    ArrayList<Recipe> getAll();
 
     HashSet<Recipe> getRecipeByIngredientId(int id);
 

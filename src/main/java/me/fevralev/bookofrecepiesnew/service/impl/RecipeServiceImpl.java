@@ -25,7 +25,7 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
-    public Recipe editRecipe(int id, Recipe recipe) {
+    public Recipe edit(int id, Recipe recipe) {
         if (recipeBook.containsKey(id)) {
             recipeBook.put(id, recipe);
             return recipe;
@@ -34,7 +34,7 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
-    public Recipe deleteRecipe(int id) {
+    public Recipe delete(int id) {
         if (recipeBook.containsKey(id)) {
             return recipeBook.remove(id);
         }
@@ -42,19 +42,23 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
-    public Map<Integer, Recipe> getAll() {
+    public ArrayList<Recipe> getAll() {
+        ArrayList<Recipe> recipeList = new ArrayList<>();
         if (recipeBook.isEmpty()) {
             return null;
         }
-        return recipeBook;
+        for (Recipe recipe: recipeBook.values()){
+            recipeList.add(recipe);
+        }
+        return recipeList;
     }
     @Override
     public HashSet<Recipe> getRecipeByIngredientId(int id){
         HashSet<Recipe> list = new HashSet<>();
         Ingredient ingredient = IngredientServiceImpl.ingredientBook.get(id);
         for (Recipe recipe: recipeBook.values()){
-            for (Ingredient ingredient1: recipe.getIngredients()){
-                if (ingredient1.equals(ingredient)) {
+            for (Ingredient ingredientFromRecipe: recipe.getIngredients()){
+                if (ingredientFromRecipe.equals(ingredient)) {
                     list.add(recipe);}
                 }
             }return list;}

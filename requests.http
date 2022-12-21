@@ -101,7 +101,7 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:8080/recipes/all
+GET http://localhost:8080/recipes/
 
 ###
 GET http://localhost:8080/recipes/search/0

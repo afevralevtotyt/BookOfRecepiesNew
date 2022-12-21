@@ -5,7 +5,7 @@ import me.fevralev.bookofrecepiesnew.service.IngredientService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
+import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/ingredients")
@@ -36,25 +36,25 @@ public class IngredientsController {
 
     @GetMapping("all")
     public ResponseEntity getAll() {
-        Map<Integer, Ingredient> book = ingredientService.getAll();
-        if (book == null) {
+        ArrayList<Ingredient> book = ingredientService.getAll();
+        if (book.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(book);
     }
 
     @PutMapping("{id}")
-    public ResponseEntity editIngredient(@PathVariable int id, @RequestBody Ingredient ingredient) {
-        Ingredient ingredient1 = ingredientService.editIngredient(id, ingredient);
-        if (ingredient == null) {
+    public ResponseEntity edit(@PathVariable int id, @RequestBody Ingredient ingredient) {
+        Ingredient editedIngredient = ingredientService.edit(id, ingredient);
+        if (editedIngredient == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(ingredient1);
+        return ResponseEntity.ok(editedIngredient);
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity deleteIngredient(@PathVariable int id) {
-        Ingredient ingredient = ingredientService.deleteIngredient(id);
+    public ResponseEntity delete(@PathVariable int id) {
+        Ingredient ingredient = ingredientService.delete(id);
         if (ingredient == null) {
             return ResponseEntity.notFound().build();
         }
