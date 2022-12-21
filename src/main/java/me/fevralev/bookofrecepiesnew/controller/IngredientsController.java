@@ -5,6 +5,7 @@ import me.fevralev.bookofrecepiesnew.service.IngredientService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.awt.print.Pageable;
 import java.util.ArrayList;
 
 @RestController
@@ -34,7 +35,7 @@ public class IngredientsController {
         return ResponseEntity.ok(ingredient);
     }
 
-    @GetMapping("all")
+    @GetMapping
     public ResponseEntity getAll() {
         ArrayList<Ingredient> book = ingredientService.getAll();
         if (book.isEmpty()) {
