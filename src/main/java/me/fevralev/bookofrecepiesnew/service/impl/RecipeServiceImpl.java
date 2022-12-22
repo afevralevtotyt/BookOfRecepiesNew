@@ -44,19 +44,10 @@ public class RecipeServiceImpl implements RecipeService {
         }
         return null;
     }
-
     @Override
-    public Page<Recipe> getAll(int currentPage, int pages) {
-        ArrayList<Recipe> recipeList = new ArrayList<>();
-        if (recipeBook.isEmpty()) {
-            return null;
-        }
-        for (Recipe recipe: recipeBook.values()){
-            recipeList.add(recipe);
-        }
-        PageImpl<Recipe> recipes;
-        recipes = new PageImpl<Recipe>(recipeList, PageRequest.of(currentPage, pages), recipeList.size());
-        return recipes;
+    public Page<Recipe> getAll(int currentPage, int count) {
+        ArrayList<Recipe> recipeList = new ArrayList<>(recipeBook.values());
+        return new PageImpl<>(recipeList, PageRequest.of(currentPage, count), recipeList.size());
     }
     @Override
     public HashSet<Recipe> getRecipeByIngredientId(int id){

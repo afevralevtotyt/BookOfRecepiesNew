@@ -2,6 +2,9 @@ package me.fevralev.bookofrecepiesnew.service.impl;
 
 import me.fevralev.bookofrecepiesnew.model.Ingredient;
 import me.fevralev.bookofrecepiesnew.service.IngredientService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -42,15 +45,11 @@ public class IngredientServiceImpl implements IngredientService {
     }
 
     @Override
-    public ArrayList<Ingredient> getAll() {
-        ArrayList<Ingredient> ingredients =new ArrayList<>();
-        if (ingredientBook.isEmpty()) {
-            return null;
+    public Page<Ingredient> getAll(int currentPage, int objects) {
+        ArrayList<Ingredient> ingredients =new ArrayList<>(ingredientBook.values());
+            Page<Ingredient> ingredientPage;
+            ingredientPage = new PageImpl<>(ingredients, PageRequest.of(currentPage, objects), ingredients.size());
+            return ingredientPage;
         }
-        for (Ingredient ingredient: ingredientBook.values()){
-            ingredients.add(ingredient);
-        }
-        return ingredients;
     }
 
-}

@@ -31,7 +31,7 @@ POST http://localhost:8080/recipes
 Content-Type: application/json
 
 {
-  "title": "Сырники из творога",
+  "title": "Сырки из творога",
   "cookingTime": 30,
   "ingredients": [
     {
@@ -101,7 +101,7 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:8080/recipes/?currentPage=1&pages=1
+GET http://localhost:8080/recipes/
 
 
 ###

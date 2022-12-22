@@ -45,19 +45,14 @@ public class RecipesController {
     }
 
     @GetMapping
-    public Page<Recipe> getAll(@RequestParam int currentPage, @RequestParam int pages) {
-        Page<Recipe> page  = recipeService.getAll(currentPage, pages);
-        if (page.isEmpty()) {
-            return null;
-        }
-        return page;
+    public ResponseEntity<Page<Recipe>> getAll(@RequestParam(defaultValue = "0") int page,
+                                               @RequestParam(defaultValue = "5") int count) {
+        Page<Recipe> result = recipeService.getAll(page, count);
+        return ResponseEntity.ok(result);
     }
     @GetMapping("/search/{id}")
     public ResponseEntity getRecipeByIngredientId(@PathVariable int id){
         HashSet<Recipe> list = recipeService.getRecipeByIngredientId(id);
-        if (list.isEmpty()){
-            return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(list);
     }
 
