@@ -1,7 +1,8 @@
 package me.fevralev.bookofrecepiesnew.service;
 
 import me.fevralev.bookofrecepiesnew.model.Ingredient;
-import org.springframework.data.domain.Page;
+
+import java.util.List;
 
 public interface IngredientService {
 
@@ -14,5 +15,5 @@ public interface IngredientService {
 
     Ingredient delete(int id);
 
-    Page<Ingredient> getAll(int currentPage, int objects);
+    List<Ingredient> getAll(int currentPage, int objects);
 }

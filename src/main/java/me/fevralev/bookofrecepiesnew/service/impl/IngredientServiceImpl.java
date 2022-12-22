@@ -2,13 +2,12 @@ package me.fevralev.bookofrecepiesnew.service.impl;
 
 import me.fevralev.bookofrecepiesnew.model.Ingredient;
 import me.fevralev.bookofrecepiesnew.service.IngredientService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.beans.support.PagedListHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -45,11 +44,12 @@ public class IngredientServiceImpl implements IngredientService {
     }
 
     @Override
-    public Page<Ingredient> getAll(int currentPage, int objects) {
-        ArrayList<Ingredient> ingredients =new ArrayList<>(ingredientBook.values());
-            Page<Ingredient> ingredientPage;
-            ingredientPage = new PageImpl<>(ingredients, PageRequest.of(currentPage, objects), ingredients.size());
-            return ingredientPage;
-        }
+    public List<Ingredient> getAll(int currentPage, int count) {
+        ArrayList<Ingredient> ingredientList = new ArrayList<>(ingredientBook.values());
+        PagedListHolder<Ingredient> pagination = new PagedListHolder<>(ingredientList);
+        pagination.setPageSize(count);
+        pagination.setPage(currentPage);
+        return pagination.getPageList();
+    }
     }
 

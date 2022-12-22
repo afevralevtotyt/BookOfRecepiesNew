@@ -2,9 +2,10 @@ package me.fevralev.bookofrecepiesnew.controller;
 
 import me.fevralev.bookofrecepiesnew.model.Ingredient;
 import me.fevralev.bookofrecepiesnew.service.IngredientService;
-import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/ingredients")
@@ -34,9 +35,10 @@ public class IngredientsController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<Ingredient>>getAll(@RequestParam int currentPage, @RequestParam int pages) {
-        Page<Ingredient> page  = ingredientService.getAll(currentPage, pages);
-              return ResponseEntity.ok(page);
+    public ResponseEntity<List<Ingredient>>getAll(@RequestParam(defaultValue = "0") int page,
+                                                  @RequestParam(defaultValue = "5") int count) {
+        List<Ingredient> list  = ingredientService.getAll(page, count);
+              return ResponseEntity.ok(list);
     }
     @PutMapping("{id}")
     public ResponseEntity edit(@PathVariable int id, @RequestBody Ingredient ingredient) {
