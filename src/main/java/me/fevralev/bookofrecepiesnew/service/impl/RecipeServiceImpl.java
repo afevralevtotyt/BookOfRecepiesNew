@@ -3,9 +3,7 @@ package me.fevralev.bookofrecepiesnew.service.impl;
 import me.fevralev.bookofrecepiesnew.model.Ingredient;
 import me.fevralev.bookofrecepiesnew.model.Recipe;
 import me.fevralev.bookofrecepiesnew.service.RecipeService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.beans.support.PagedListHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -45,9 +43,17 @@ public class RecipeServiceImpl implements RecipeService {
         return null;
     }
     @Override
-    public Page<Recipe> getAll(int currentPage, int count) {
+    public List<Recipe> getAll(int currentPage, int count) {
         ArrayList<Recipe> recipeList = new ArrayList<>(recipeBook.values());
-        return new PageImpl<>(recipeList, PageRequest.of(currentPage, count), recipeList.size());
+        PagedListHolder<Recipe> pagination = new PagedListHolder<>(recipeList);
+        pagination.setPageSize(count);
+        if (currentPage==1){
+        pagination.nextPage();}
+        else if(currentPage==2){
+            pagination.nextPage();
+            pagination.nextPage();
+        }
+        return pagination.getPageList();
     }
     @Override
     public HashSet<Recipe> getRecipeByIngredientId(int id){

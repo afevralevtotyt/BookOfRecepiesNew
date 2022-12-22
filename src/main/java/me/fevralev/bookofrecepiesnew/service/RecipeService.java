@@ -3,9 +3,9 @@ package me.fevralev.bookofrecepiesnew.service;
 
 import me.fevralev.bookofrecepiesnew.model.Ingredient;
 import me.fevralev.bookofrecepiesnew.model.Recipe;
-import org.springframework.data.domain.Page;
 
 import java.util.HashSet;
+import java.util.List;
 
 public interface RecipeService {
 
@@ -18,7 +18,7 @@ public interface RecipeService {
 
     Recipe delete(int id);
 
-    Page<Recipe> getAll(int currentPage, int pages);
+    List<Recipe> getAll(int currentPage, int pages);
 
     HashSet<Recipe> getRecipeByIngredientId(int id);
 

@@ -4,11 +4,11 @@ import me.fevralev.bookofrecepiesnew.model.Ingredient;
 import me.fevralev.bookofrecepiesnew.model.Recipe;
 import me.fevralev.bookofrecepiesnew.service.impl.IngredientServiceImpl;
 import me.fevralev.bookofrecepiesnew.service.impl.RecipeServiceImpl;
-import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
+import java.util.List;
 
 @RestController
 @RequestMapping("/recipes")
@@ -45,9 +45,9 @@ public class RecipesController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<Recipe>> getAll(@RequestParam(defaultValue = "0") int page,
-                                               @RequestParam(defaultValue = "5") int count) {
-        Page<Recipe> result = recipeService.getAll(page, count);
+    public ResponseEntity<List<Recipe>>getAll(@RequestParam(defaultValue = "0") int page,
+                                                         @RequestParam(defaultValue = "5") int count) {
+        List<Recipe> result = recipeService.getAll(page, count);
         return ResponseEntity.ok(result);
     }
     @GetMapping("/search/{id}")
