@@ -47,12 +47,7 @@ public class RecipeServiceImpl implements RecipeService {
         ArrayList<Recipe> recipeList = new ArrayList<>(recipeBook.values());
         PagedListHolder<Recipe> pagination = new PagedListHolder<>(recipeList);
         pagination.setPageSize(count);
-        if (currentPage==1){
-        pagination.nextPage();}
-        else if(currentPage==2){
-            pagination.nextPage();
-            pagination.nextPage();
-        }
+        pagination.setPage(currentPage);
         return pagination.getPageList();
     }
     @Override
