@@ -3,13 +3,13 @@ package me.fevralev.bookofrecepiesnew.service.impl;
 import me.fevralev.bookofrecepiesnew.model.Ingredient;
 import me.fevralev.bookofrecepiesnew.model.Recipe;
 import me.fevralev.bookofrecepiesnew.service.RecipeService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.support.PagedListHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
 @Service
-
 public class RecipeServiceImpl implements RecipeService {
     private int id = 0;
     private Map<Integer, Recipe> recipeBook = new HashMap<>();
@@ -56,7 +56,7 @@ public class RecipeServiceImpl implements RecipeService {
         Ingredient ingredient = IngredientServiceImpl.ingredientBook.get(id);
         for (Recipe recipe: recipeBook.values()){
             for (Ingredient ingredientFromRecipe: recipe.getIngredients()){
-                if (ingredientFromRecipe.equals(ingredient)) {
+                if (StringUtils.compare(ingredientFromRecipe.getTitle(),(ingredient.getTitle()))==0) {
                     list.add(recipe);}
                 }
             }return list;}

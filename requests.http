@@ -20,7 +20,7 @@ POST http://localhost:8080/ingredients
 Content-Type: application/json
 
 {
-  "title": "Пшеничная мука",
+  "title": "Пшеничная мукка",
   "count": 6,
   "measureUnit": "ст. л."
 }
@@ -31,7 +31,7 @@ POST http://localhost:8080/recipes
 Content-Type: application/json
 
 {
-  "title": "Сырки из творога",
+  "title": "Сырники из творога",
   "cookingTime": 30,
   "ingredients": [
     {
