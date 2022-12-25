@@ -39,7 +39,7 @@ public class RecipesController {
             )),
             @ApiResponse(
                     responseCode = "404",
-                    description = "Ошибка ввода"
+                    description = "Ошибка ввода!"
             )
     })
     @PostMapping
