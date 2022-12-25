@@ -2,6 +2,7 @@ package me.fevralev.bookofrecepiesnew.service.impl;
 
 import me.fevralev.bookofrecepiesnew.model.Ingredient;
 import me.fevralev.bookofrecepiesnew.service.IngredientService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.support.PagedListHolder;
 import org.springframework.stereotype.Service;
 
@@ -17,8 +18,10 @@ public class IngredientServiceImpl implements IngredientService {
 
     @Override
     public Ingredient add(Ingredient ingr) {
-        ingredientBook.put(id++, ingr);
-        return ingr;
+        if (StringUtils.isNotEmpty(ingr.getTitle()) && StringUtils.isNotEmpty(ingr.getMeasureUnit()) && ingr.getCount() > 0) {
+            ingredientBook.put(id++, ingr);
+            return ingr;
+        } else return null;
     }
 
     @Override
@@ -51,5 +54,5 @@ public class IngredientServiceImpl implements IngredientService {
         pagination.setPage(currentPage);
         return pagination.getPageList();
     }
-    }
+}
 

@@ -18,6 +18,7 @@ public class FirstController {
     public FirstController(CounterService counterService) {
         this.counterService = counterService;
     }
+
     @GetMapping("/greetings")
     @Operation(description = "Приветственное слово")
     @ApiResponses(value = {
@@ -45,9 +46,9 @@ public class FirstController {
             @ApiResponse(
                     responseCode = "200",
                     description = "Теперь вы знаете большую тайну!",
-            content = {
-                    @Content(
-                            mediaType = "text/plain;charset=UTF-8")
+                    content = {
+                            @Content(
+                                    mediaType = "text/plain;charset=UTF-8")
                     })
     })
     @GetMapping("/info")

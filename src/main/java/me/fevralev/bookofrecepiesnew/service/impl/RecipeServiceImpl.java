@@ -3,6 +3,7 @@ package me.fevralev.bookofrecepiesnew.service.impl;
 import me.fevralev.bookofrecepiesnew.model.Ingredient;
 import me.fevralev.bookofrecepiesnew.model.Recipe;
 import me.fevralev.bookofrecepiesnew.service.RecipeService;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.support.PagedListHolder;
 import org.springframework.stereotype.Service;
@@ -17,8 +18,11 @@ public class RecipeServiceImpl implements RecipeService {
 
     @Override
     public Recipe add(Recipe recipe) {
+        if (StringUtils.isNotEmpty(recipe.getTitle()) && ArrayUtils.isNotEmpty(recipe.getIngredients()) &&
+                ArrayUtils.isNotEmpty(recipe.getSteps()) && recipe.getCookingTime() > 0){
         recipeBook.put(id++, recipe);
-        return recipe;
+        return recipe;}
+        return null;
     }
 
     @Override
@@ -42,6 +46,7 @@ public class RecipeServiceImpl implements RecipeService {
         }
         return null;
     }
+
     @Override
     public List<Recipe> getAll(int currentPage, int count) {
         ArrayList<Recipe> recipeList = new ArrayList<>(recipeBook.values());
@@ -50,26 +55,31 @@ public class RecipeServiceImpl implements RecipeService {
         pagination.setPage(currentPage);
         return pagination.getPageList();
     }
+
     @Override
-    public HashSet<Recipe> getRecipeByIngredientId(int id){
+    public HashSet<Recipe> getRecipeByIngredientId(int id) {
         HashSet<Recipe> list = new HashSet<>();
         Ingredient ingredient = IngredientServiceImpl.ingredientBook.get(id);
-        for (Recipe recipe: recipeBook.values()){
-            for (Ingredient ingredientFromRecipe: recipe.getIngredients()){
-                if (StringUtils.compare(ingredientFromRecipe.getTitle(),(ingredient.getTitle()))==0) {
-                    list.add(recipe);}
+        for (Recipe recipe : recipeBook.values()) {
+            for (Ingredient ingredientFromRecipe : recipe.getIngredients()) {
+                if (StringUtils.compare(ingredientFromRecipe.getTitle(), (ingredient.getTitle())) == 0) {
+                    list.add(recipe);
                 }
-            }return list;}
+            }
+        }
+        return list;
+    }
+
     @Override
-    public Recipe searchBySomeIngredients(Ingredient[] ingredients){
-        for (Recipe recipe: recipeBook.values()){
+    public Recipe searchBySomeIngredients(Ingredient[] ingredients) {
+        for (Recipe recipe : recipeBook.values()) {
             ArrayList<Ingredient> list = new ArrayList<>(List.of(recipe.getIngredients()));
-            if (list.containsAll(List.of(ingredients))){
+            if (list.containsAll(List.of(ingredients))) {
                 return recipe;
             }
         }
         return null;
     }
 
-    }
+}
 

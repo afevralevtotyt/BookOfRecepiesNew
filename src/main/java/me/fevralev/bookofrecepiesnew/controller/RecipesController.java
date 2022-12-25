@@ -13,8 +13,6 @@ import me.fevralev.bookofrecepiesnew.model.Ingredient;
 import me.fevralev.bookofrecepiesnew.model.Recipe;
 import me.fevralev.bookofrecepiesnew.service.impl.IngredientServiceImpl;
 import me.fevralev.bookofrecepiesnew.service.impl.RecipeServiceImpl;
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,6 +27,7 @@ public class RecipesController {
     public RecipesController(RecipeServiceImpl recipeService, IngredientServiceImpl ingredientService) {
         this.recipeService = recipeService;
     }
+
     @Tag(name = "Добавить рецепт")
     @Operation(description = "В теле запроса в формате JSON введите новый рецепт")
     @ApiResponses(value = {
@@ -45,11 +44,13 @@ public class RecipesController {
     })
     @PostMapping
     public ResponseEntity createRecipe(@RequestBody Recipe recipe) {
-        if(StringUtils.isNotEmpty(recipe.getTitle())&& ArrayUtils.isNotEmpty(recipe.getIngredients())&&ArrayUtils.isNotEmpty(recipe.getSteps())&&recipe.getCookingTime()>0){
-            Recipe createdRecipe = recipeService.add(recipe);
-        return ResponseEntity.ok(recipe);}
+        Recipe createdRecipe = recipeService.add(recipe);
+        if (createdRecipe != null) {
+            return ResponseEntity.ok(recipe);
+        }
         return ResponseEntity.notFound().build();
     }
+
     @Tag(name = "Поиск рецепта по нескольким ингредиетам")
     @Operation(description = "В теле запроса в формате JSON введите список ингредиентов")
     @ApiResponses(value = {
@@ -67,54 +68,15 @@ public class RecipesController {
     @PostMapping("/search")
     public ResponseEntity createRecipe(@RequestBody Ingredient[] ingredients) {
         Recipe recipe = recipeService.searchBySomeIngredients(ingredients);
-        if (recipe==null){
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(recipe);
-
-    }
-    @Tag(name = "Получить рецепт по его идентификатору")
-    @Operation(description = "Введите id рецепта")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Успех", content = @Content(
-                    mediaType = "application/json"
-            )),
-            @ApiResponse(
-            responseCode = "404",
-            description = "Ошибка ввода"
-    )
-    })
-    @Parameters(value = {@Parameter( example = "0", name = "id", description = "ID рецепта в книге")})
-    @GetMapping("{id}")
-    public ResponseEntity getUser(@PathVariable int id) {
-        Recipe recipe = recipeService.getById(id);
         if (recipe == null) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(recipe);
-    }
-    @Tag(name = "Получить список всех рецептов")
-    @Operation(description = "Введите номер страницы, количество рецептов на странице")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Успех", content = @Content(
-                    mediaType = "application/json"
-            ))
-    })
-    @Parameters(value = {@Parameter( example = "0", name = "page", description = "Номер страницы"),
-            @Parameter( example = "5", name = "count", description = "Количество рецептов на странице")})
-    @GetMapping
-    public ResponseEntity<List<Recipe>>getAll(@RequestParam(defaultValue = "0") int page,
-                                                         @RequestParam(defaultValue = "5") int count) {
-        List<Recipe> result = recipeService.getAll(page, count);
-        return ResponseEntity.ok(result);
+
     }
 
-    @Tag(name = "Получить список рецептов с ингредиентом по идентификатору ингредиента")
-    @Operation(description = "Введите id ингредиента")
+    @Tag(name = "Получить рецепт по его идентификатору")
+    @Operation(description = "Введите id рецепта")
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
@@ -126,12 +88,54 @@ public class RecipesController {
                     description = "Ошибка ввода"
             )
     })
-    @Parameters(value = {@Parameter( example = "0", name = "id", description = "ID ингредиента в книге")})
+    @Parameters(value = {@Parameter(example = "0", name = "id", description = "ID рецепта в книге")})
+    @GetMapping("{id}")
+    public ResponseEntity getUser(@PathVariable int id) {
+        Recipe recipe = recipeService.getById(id);
+        if (recipe == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(recipe);
+    }
+
+    @Tag(name = "Получить список всех рецептов")
+    @Operation(description = "Введите номер страницы, количество рецептов на странице")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Успех", content = @Content(
+                    mediaType = "application/json"
+            ))
+    })
+    @Parameters(value = {@Parameter(example = "0", name = "page", description = "Номер страницы"),
+            @Parameter(example = "5", name = "count", description = "Количество рецептов на странице")})
+    @GetMapping
+    public ResponseEntity<List<Recipe>> getAll(@RequestParam(defaultValue = "0") int page,
+                                               @RequestParam(defaultValue = "5") int count) {
+        List<Recipe> result = recipeService.getAll(page, count);
+        return ResponseEntity.ok(result);
+    }
+
+    @Tag(name = "Получить список рецептов с ингредиентом по идентификатору ингредиента")
+    @Operation(description = "Введите id ингредиента")
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Успех", content = @Content(
+                    mediaType = "application/json"
+            )),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Ошибка ввода"
+            )
+    })
+    @Parameters(value = {@Parameter(example = "0", name = "id", description = "ID ингредиента в книге")})
     @GetMapping("/search/{id}")
-    public ResponseEntity getRecipeByIngredientId(@PathVariable int id){
+    public ResponseEntity getRecipeByIngredientId(@PathVariable int id) {
         HashSet<Recipe> list = recipeService.getRecipeByIngredientId(id);
         return ResponseEntity.ok(list);
     }
+
     @Tag(name = "Отредактировать рецепт по его идентификатору")
     @Operation(description = "Введите номер рецепта и в теле запроса в формате JSON новый рецепт")
     @ApiResponses(value = {
@@ -146,7 +150,7 @@ public class RecipesController {
                     description = "Рецепт не найден"
             )
     })
-    @Parameters(value = {@Parameter( example = "0", name = "id", description = "Идентификатор редактируемого рецепта")})
+    @Parameters(value = {@Parameter(example = "0", name = "id", description = "Идентификатор редактируемого рецепта")})
     @PutMapping("{id}")
     public ResponseEntity edit(@PathVariable int id, @RequestBody Recipe recipe) {
         Recipe editedRecipe = recipeService.edit(id, recipe);
@@ -155,6 +159,7 @@ public class RecipesController {
         }
         return ResponseEntity.ok(editedRecipe);
     }
+
     @Tag(name = "Удалить рецепт по идентификатору")
     @Operation(description = "Введите номер рецепта, который вы хотите удалить")
     @ApiResponses(value = {
@@ -168,7 +173,7 @@ public class RecipesController {
                     description = "Рецепт не найден"
             )
     })
-    @Parameters(value = {@Parameter( example = "0", name = "id", description = "Идентификатор удаляемого рецепта")})
+    @Parameters(value = {@Parameter(example = "0", name = "id", description = "Идентификатор удаляемого рецепта")})
     @DeleteMapping("{id}")
     public ResponseEntity delete(@PathVariable int id) {
         Recipe recipe = recipeService.delete(id);

@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class Recipe{
+public class Recipe {
     private String title;
     private int cookingTime;
     private Ingredient[] ingredients;
