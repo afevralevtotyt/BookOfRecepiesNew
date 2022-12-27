@@ -16,7 +16,6 @@ import me.fevralev.bookofrecepiesnew.service.impl.RecipeServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashSet;
 import java.util.List;
 
 @RestController
@@ -114,26 +113,6 @@ public class RecipesController {
                                                @RequestParam(defaultValue = "5") int count) {
         List<Recipe> result = recipeService.getAll(page, count);
         return ResponseEntity.ok(result);
-    }
-
-    @Tag(name = "Получить список рецептов с ингредиентом по идентификатору ингредиента")
-    @Operation(description = "Введите id ингредиента")
-    @ApiResponses({
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Успех", content = @Content(
-                    mediaType = "application/json"
-            )),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Ошибка ввода"
-            )
-    })
-    @Parameters(value = {@Parameter(example = "0", name = "id", description = "ID ингредиента в книге")})
-    @GetMapping("/search/{id}")
-    public ResponseEntity getRecipeByIngredientId(@PathVariable int id) {
-        HashSet<Recipe> list = recipeService.getRecipeByIngredientId(id);
-        return ResponseEntity.ok(list);
     }
 
     @Tag(name = "Отредактировать рецепт по его идентификатору")

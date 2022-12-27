@@ -23,4 +23,8 @@ public interface RecipeService {
     HashSet<Recipe> getRecipeByIngredientId(int id);
 
     Recipe searchBySomeIngredients(Ingredient[] ingredients);
+
+    void saveToFile();
+
+    void readFromFile();
 }

@@ -21,8 +21,6 @@ import java.util.List;
 public class IngredientsController {
 
     private final IngredientService ingredientService;
-
-
     public IngredientsController(IngredientService ingredientService) {
         this.ingredientService = ingredientService;
     }
