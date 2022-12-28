@@ -3,6 +3,8 @@ package me.fevralev.bookofrecepiesnew.service.impl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import me.fevralev.bookofrecepiesnew.exception.FileReadException;
+import me.fevralev.bookofrecepiesnew.exception.FileWriteException;
 import me.fevralev.bookofrecepiesnew.model.Ingredient;
 import me.fevralev.bookofrecepiesnew.model.Recipe;
 import me.fevralev.bookofrecepiesnew.service.RecipeService;
@@ -23,18 +25,20 @@ public class RecipeServiceImpl implements RecipeService {
     public RecipeServiceImpl(FilesRecipesServiceImpl filesRecipesService) {
         this.filesRecipesService = filesRecipesService;
     }
+
     @PostConstruct
-    public void init(){
+    public void init() {
         readFromFile();
     }
 
     @Override
     public Recipe add(Recipe recipe) {
         if (StringUtils.isNotEmpty(recipe.getTitle()) && ArrayUtils.isNotEmpty(recipe.getIngredients()) &&
-                ArrayUtils.isNotEmpty(recipe.getSteps()) && recipe.getCookingTime() > 0){
-        recipeBook.put(id++, recipe);
-        saveToFile();
-        return recipe;}
+                ArrayUtils.isNotEmpty(recipe.getSteps()) && recipe.getCookingTime() > 0) {
+            recipeBook.put(id++, recipe);
+            saveToFile();
+            return recipe;
+        }
         return null;
     }
 
@@ -104,7 +108,7 @@ public class RecipeServiceImpl implements RecipeService {
             filesRecipesService.saveToFile(json);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
-            throw new RuntimeException(e);
+            throw new FileWriteException("Ошибка записи в файл");
         }
     }
 
@@ -115,7 +119,9 @@ public class RecipeServiceImpl implements RecipeService {
             recipeBook = new ObjectMapper().readValue(json, new TypeReference<HashMap<Integer, Recipe>>() {
             });
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
+            throw new FileReadException("Ошибка чтения файла");
+
         }
     }
 

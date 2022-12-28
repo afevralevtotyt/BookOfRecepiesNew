@@ -21,6 +21,7 @@ import java.util.List;
 public class IngredientsController {
 
     private final IngredientService ingredientService;
+
     public IngredientsController(IngredientService ingredientService) {
         this.ingredientService = ingredientService;
     }
@@ -40,11 +41,13 @@ public class IngredientsController {
             )
     })
     @PostMapping
-    public ResponseEntity createIngredient(@RequestBody Ingredient ingredient){
-            Ingredient createdRecipe = ingredientService.add(ingredient);
-            if(createdRecipe!=null){
-            return ResponseEntity.ok(ingredient);}
-        return ResponseEntity.notFound().build();
+    public ResponseEntity createIngredient(@RequestBody Ingredient ingredient) {
+        Ingredient createdRecipe = ingredientService.add(ingredient);
+        if (createdRecipe == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(ingredient);
+
     }
 
     @Tag(name = "Получить ингредиент по его идентификатору")

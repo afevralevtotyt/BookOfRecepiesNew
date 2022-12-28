@@ -1,5 +1,7 @@
 package me.fevralev.bookofrecepiesnew.service.impl;
 
+import me.fevralev.bookofrecepiesnew.exception.FileReadException;
+import me.fevralev.bookofrecepiesnew.exception.FileWriteException;
 import me.fevralev.bookofrecepiesnew.service.FilesService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -24,7 +26,7 @@ public class FilesIngredientsServiceImpl implements FilesService {
             return true;
         } catch (IOException e) {
             e.printStackTrace();
-            return false;
+            throw new FileWriteException("Ошибка записи в файл");
         }
     }
 
@@ -33,7 +35,7 @@ public class FilesIngredientsServiceImpl implements FilesService {
         try {
             return Files.readString(Path.of(dataFilePath, dataFileName));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new FileReadException("Ошибка чтения файла");
         }
     }
 

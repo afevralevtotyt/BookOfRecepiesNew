@@ -3,6 +3,8 @@ package me.fevralev.bookofrecepiesnew.service.impl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import me.fevralev.bookofrecepiesnew.exception.FileReadException;
+import me.fevralev.bookofrecepiesnew.exception.FileWriteException;
 import me.fevralev.bookofrecepiesnew.model.Ingredient;
 import me.fevralev.bookofrecepiesnew.service.IngredientService;
 import org.apache.commons.lang3.StringUtils;
@@ -82,7 +84,7 @@ public class IngredientServiceImpl implements IngredientService {
             filesIngredientsService.saveToFile(json);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
-            throw new RuntimeException(e);
+            throw new FileWriteException("Ошибка записи в файл");
         }
     }
 
@@ -93,7 +95,7 @@ public class IngredientServiceImpl implements IngredientService {
             ingredientBook = new ObjectMapper().readValue(json, new TypeReference<HashMap<Integer, Ingredient>>() {
             });
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+            throw new FileReadException("Ошибка чтения файла");
         }
     }
 }

@@ -89,7 +89,7 @@ public class RecipesController {
     })
     @Parameters(value = {@Parameter(example = "0", name = "id", description = "ID рецепта в книге")})
     @GetMapping("{id}")
-    public ResponseEntity getUser(@PathVariable int id) {
+    public ResponseEntity getRecipe(@PathVariable int id) {
         Recipe recipe = recipeService.getById(id);
         if (recipe == null) {
             return ResponseEntity.notFound().build();
