@@ -16,4 +16,8 @@ public interface IngredientService {
     Ingredient delete(int id);
 
     List<Ingredient> getAll(int currentPage, int objects);
+
+    void saveToFile();
+
+    void readFromFile();
 }
