@@ -3,6 +3,7 @@ package me.fevralev.bookofrecepiesnew.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import me.fevralev.bookofrecepiesnew.exception.FileDownloadException;
+import me.fevralev.bookofrecepiesnew.exception.FileUploadException;
 import me.fevralev.bookofrecepiesnew.service.impl.FilesIngredientsServiceImpl;
 import me.fevralev.bookofrecepiesnew.service.impl.FilesRecipesServiceImpl;
 import org.springframework.core.io.InputStreamResource;
@@ -31,7 +32,12 @@ public class FilesController {
     @Operation(description = "Выберите файл с рецептами")
     @PostMapping(value = "/uploadRecipes", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> uploadRecipes(@RequestParam MultipartFile file){
-        filesService.uploadFile(file);
+
+        try {
+            filesService.uploadFile(file);
+        } catch (IOException e) {
+            throw new FileUploadException();
+        }
         return ResponseEntity.ok().build();
     }
     @Tag(name = "Выгрузить ингредиенты из файла JSON")
@@ -52,7 +58,7 @@ public class FilesController {
             try {
                 inputStreamResource = new InputStreamResource(new FileInputStream(file));
             } catch (FileNotFoundException e) {
-                throw new FileDownloadException("Ошибка скачивания файла");
+                throw new FileDownloadException();
             }
             return ResponseEntity.ok()
                     .contentType(MediaType.APPLICATION_JSON)
