@@ -52,7 +52,7 @@ public class FilesController {
             try {
                 inputStreamResource = new InputStreamResource(new FileInputStream(file));
             } catch (FileNotFoundException e) {
-                throw new FileDownloadException();
+                throw new FileDownloadException("Ошибка скачивания файла");
             }
             return ResponseEntity.ok()
                     .contentType(MediaType.APPLICATION_JSON)

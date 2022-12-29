@@ -69,7 +69,7 @@ public class FilesRecipesServiceImpl implements FilesService {
             Files.deleteIfExists(filePath);
             bis.transferTo(bos);
         } catch (IOException e) {
-            throw new FileUploadException();
+            throw new FileUploadException("Ошибка выгрузки файла");
         }
     }
 }
