@@ -14,7 +14,7 @@ import java.nio.file.Path;
 import static java.nio.file.StandardOpenOption.CREATE_NEW;
 
 @Service
-public class FilesService implements me.fevralev.bookofrecepiesnew.service.FilesService {
+public class FilesRecipesServiceImpl implements me.fevralev.bookofrecepiesnew.service.FilesService {
     @Value("${path.to.data.file}")
     private String dataFilePath;
     @Value("${name.of.recipes.data.file}")

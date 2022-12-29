@@ -17,11 +17,11 @@ import java.util.*;
 
 @Service
 public class RecipeService implements me.fevralev.bookofrecepiesnew.service.RecipeService {
-    final private FilesService filesRecipesService;
+    final private FilesRecipesServiceImpl filesRecipesService;
     private int id = 0;
     private Map<Integer, Recipe> recipeBook = new HashMap<>();
 
-    public RecipeService(FilesService filesRecipesService) {
+    public RecipeService(FilesRecipesServiceImpl filesRecipesService) {
         this.filesRecipesService = filesRecipesService;
     }
 

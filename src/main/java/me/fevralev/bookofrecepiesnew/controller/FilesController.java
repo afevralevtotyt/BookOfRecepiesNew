@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import me.fevralev.bookofrecepiesnew.exception.FileDownloadException;
 import me.fevralev.bookofrecepiesnew.exception.FileUploadException;
 import me.fevralev.bookofrecepiesnew.service.impl.FilesIngredientsServiceImpl;
-import me.fevralev.bookofrecepiesnew.service.impl.FilesService;
+import me.fevralev.bookofrecepiesnew.service.impl.FilesRecipesServiceImpl;
 import me.fevralev.bookofrecepiesnew.service.impl.IngredientService;
 import me.fevralev.bookofrecepiesnew.service.impl.RecipeService;
 import org.springframework.core.io.InputStreamResource;
@@ -23,12 +23,12 @@ import java.io.IOException;
 @RestController
 @RequestMapping("/files/")
 public class FilesController {
-    final private FilesService filesService;
+    final private FilesRecipesServiceImpl filesService;
     final private RecipeService recipeService;
     final private IngredientService ingredientService;
 
 
-    public FilesController(FilesService filesService, FilesIngredientsServiceImpl filesIngredientsService, RecipeService recipeService, IngredientService ingredientService) {
+    public FilesController(FilesRecipesServiceImpl filesService, FilesIngredientsServiceImpl filesIngredientsService, RecipeService recipeService, IngredientService ingredientService) {
         this.filesService = filesService;
         this.recipeService = recipeService;
         this.ingredientService = ingredientService;
