@@ -48,7 +48,7 @@ public class FilesController {
     public ResponseEntity<InputStreamResource> downloadDataFile() {
         File file = filesService.getDataFile();
         if (file.exists()) {
-            InputStreamResource inputStreamResource = null;
+            InputStreamResource inputStreamResource;
             try {
                 inputStreamResource = new InputStreamResource(new FileInputStream(file));
             } catch (FileNotFoundException e) {
