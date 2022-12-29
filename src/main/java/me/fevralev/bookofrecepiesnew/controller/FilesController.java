@@ -23,13 +23,15 @@ import java.io.IOException;
 @RestController
 @RequestMapping("/files/")
 public class FilesController {
-    final private FilesRecipesServiceImpl filesService;
+    final private FilesRecipesServiceImpl filesRecipesService;
+    final private FilesIngredientsServiceImpl filesIngredientsService;
     final private RecipeService recipeService;
     final private IngredientService ingredientService;
 
 
-    public FilesController(FilesRecipesServiceImpl filesService, FilesIngredientsServiceImpl filesIngredientsService, RecipeService recipeService, IngredientService ingredientService) {
-        this.filesService = filesService;
+    public FilesController(FilesRecipesServiceImpl filesService, FilesIngredientsServiceImpl filesIngredientsService, FilesIngredientsServiceImpl filesIngredientsService1, RecipeService recipeService, IngredientService ingredientService) {
+        this.filesRecipesService = filesService;
+        this.filesIngredientsService = filesIngredientsService1;
         this.recipeService = recipeService;
         this.ingredientService = ingredientService;
     }
@@ -40,7 +42,7 @@ public class FilesController {
     public ResponseEntity<String> uploadRecipes(@RequestParam MultipartFile file) {
 
         try {
-            filesService.uploadFile(file);
+            filesRecipesService.uploadFile(file);
             recipeService.readFromFile();
         } catch (IOException e) {
             throw new FileUploadException();
@@ -54,7 +56,7 @@ public class FilesController {
     public ResponseEntity<String> uploadIngredients(@RequestParam MultipartFile file) {
 
         try {
-            filesService.uploadFile(file);
+            filesIngredientsService.uploadFile(file);
             ingredientService.readFromFile();
         } catch (IOException e) {
             throw new FileUploadException();
@@ -66,7 +68,7 @@ public class FilesController {
     @Operation(description = "Нажмите Download file")
     @GetMapping(value = "/downloadRecipes")
     public ResponseEntity<InputStreamResource> downloadDataFile() {
-        File file = filesService.getDataFile();
+        File file = filesRecipesService.getDataFile();
         if (file.exists()) {
             InputStreamResource inputStreamResource;
             try {
