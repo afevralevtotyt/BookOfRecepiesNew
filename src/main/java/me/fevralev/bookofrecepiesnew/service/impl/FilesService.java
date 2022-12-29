@@ -3,7 +3,6 @@ package me.fevralev.bookofrecepiesnew.service.impl;
 import me.fevralev.bookofrecepiesnew.exception.FileReadException;
 import me.fevralev.bookofrecepiesnew.exception.FileUploadException;
 import me.fevralev.bookofrecepiesnew.exception.FileWriteException;
-import me.fevralev.bookofrecepiesnew.service.FilesService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,12 +14,13 @@ import java.nio.file.Path;
 import static java.nio.file.StandardOpenOption.CREATE_NEW;
 
 @Service
-public class FilesRecipesServiceImpl implements FilesService {
+public class FilesService implements me.fevralev.bookofrecepiesnew.service.FilesService {
     @Value("${path.to.data.file}")
     private String dataFilePath;
     @Value("${name.of.recipes.data.file}")
     private String dataFileName;
-
+    @Value("${kByte}")
+    private int KBYTE;
     @Override
     public boolean saveToFile(String json) {
         try {
@@ -66,8 +66,8 @@ public class FilesRecipesServiceImpl implements FilesService {
         try (
                 InputStream is = file.getInputStream();
                 OutputStream os = Files.newOutputStream(filePath, CREATE_NEW);
-                BufferedInputStream bis = new BufferedInputStream(is, 1024);
-                BufferedOutputStream bos = new BufferedOutputStream(os, 1024);
+                BufferedInputStream bis = new BufferedInputStream(is, KBYTE);
+                BufferedOutputStream bos = new BufferedOutputStream(os, KBYTE);
         ) {
             bis.transferTo(bos);
         } catch (IOException e) {

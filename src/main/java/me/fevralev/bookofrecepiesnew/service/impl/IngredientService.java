@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import me.fevralev.bookofrecepiesnew.exception.FileReadException;
 import me.fevralev.bookofrecepiesnew.exception.FileWriteException;
 import me.fevralev.bookofrecepiesnew.model.Ingredient;
-import me.fevralev.bookofrecepiesnew.service.IngredientService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.support.PagedListHolder;
 import org.springframework.stereotype.Service;
@@ -18,12 +17,12 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class IngredientServiceImpl implements IngredientService {
+public class IngredientService implements me.fevralev.bookofrecepiesnew.service.IngredientService {
     final private FilesIngredientsServiceImpl filesIngredientsService;
     private int id = 0;
     public static Map<Integer, Ingredient> ingredientBook = new HashMap<>();
 
-    public IngredientServiceImpl(FilesIngredientsServiceImpl filesIngredientsService) {
+    public IngredientService(FilesIngredientsServiceImpl filesIngredientsService) {
         this.filesIngredientsService = filesIngredientsService;
     }
 

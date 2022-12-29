@@ -21,6 +21,8 @@ public class FilesIngredientsServiceImpl implements FilesService {
     private String dataFilePath;
     @Value("${name.of.ingredients.data.file}")
     private String dataFileName;
+    @Value("${kByte}")
+    private int KBYTE;
 
     @Override
     public boolean saveToFile(String json) {
@@ -69,8 +71,8 @@ public class FilesIngredientsServiceImpl implements FilesService {
         try (
                 InputStream is = file.getInputStream();
                 OutputStream os = Files.newOutputStream(filePath, CREATE_NEW);
-                BufferedInputStream bis = new BufferedInputStream(is, 1024);
-                BufferedOutputStream bos = new BufferedOutputStream(os, 1024);
+                BufferedInputStream bis = new BufferedInputStream(is, KBYTE);
+                BufferedOutputStream bos = new BufferedOutputStream(os, KBYTE);
         ) {
             bis.transferTo(bos);
         } catch (IOException e) {

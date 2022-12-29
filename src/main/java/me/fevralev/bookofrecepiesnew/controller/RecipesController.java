@@ -11,8 +11,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import me.fevralev.bookofrecepiesnew.model.Ingredient;
 import me.fevralev.bookofrecepiesnew.model.Recipe;
-import me.fevralev.bookofrecepiesnew.service.impl.IngredientServiceImpl;
-import me.fevralev.bookofrecepiesnew.service.impl.RecipeServiceImpl;
+import me.fevralev.bookofrecepiesnew.service.impl.IngredientService;
+import me.fevralev.bookofrecepiesnew.service.impl.RecipeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,9 +21,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/recipes")
 public class RecipesController {
-    private final RecipeServiceImpl recipeService;
+    private final RecipeService recipeService;
 
-    public RecipesController(RecipeServiceImpl recipeService, IngredientServiceImpl ingredientService) {
+    public RecipesController(RecipeService recipeService, IngredientService ingredientService) {
         this.recipeService = recipeService;
     }
 
