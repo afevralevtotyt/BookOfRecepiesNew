@@ -28,10 +28,11 @@ public class FilesController {
         this.filesService = filesService;
         this.filesIngredientsService = filesIngredientsService;
     }
+
     @Tag(name = "Выгрузить рецепты из файла JSON")
     @Operation(description = "Выберите файл с рецептами")
     @PostMapping(value = "/uploadRecipes", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<String> uploadRecipes(@RequestParam MultipartFile file){
+    public ResponseEntity<String> uploadRecipes(@RequestParam MultipartFile file) {
 
         try {
             filesService.uploadFile(file);
@@ -40,11 +41,17 @@ public class FilesController {
         }
         return ResponseEntity.ok().build();
     }
+
     @Tag(name = "Выгрузить ингредиенты из файла JSON")
     @Operation(description = "Выберите файл с ингредиентами")
     @PostMapping(value = "/uploadIngredients", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<String> uploadIngredients(@RequestParam MultipartFile file) throws IOException {
-        filesIngredientsService.uploadFile(file);
+    public ResponseEntity<String> uploadIngredients(@RequestParam MultipartFile file) {
+
+        try {
+            filesIngredientsService.uploadFile(file);
+        } catch (IOException e) {
+            throw new FileUploadException();
+        }
         return ResponseEntity.ok().build();
     }
 

@@ -12,6 +12,8 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import static java.nio.file.StandardOpenOption.CREATE_NEW;
+
 
 @Service
 public class FilesIngredientsServiceImpl implements FilesService {
@@ -60,16 +62,16 @@ public class FilesIngredientsServiceImpl implements FilesService {
     }
 
     @Override
-    public void uploadFile(MultipartFile file) {
+    public void uploadFile(MultipartFile file) throws IOException {
         Path filePath = Path.of(dataFilePath, dataFileName);
+        Files.createDirectories(filePath.getParent());
+        Files.deleteIfExists(filePath);
         try (
                 InputStream is = file.getInputStream();
-                OutputStream os = Files.newOutputStream(filePath);
+                OutputStream os = Files.newOutputStream(filePath, CREATE_NEW);
                 BufferedInputStream bis = new BufferedInputStream(is, 1024);
                 BufferedOutputStream bos = new BufferedOutputStream(os, 1024);
         ) {
-            Files.createDirectories(filePath.getParent());
-            Files.deleteIfExists(filePath);
             bis.transferTo(bos);
         } catch (IOException e) {
             throw new FileUploadException();
