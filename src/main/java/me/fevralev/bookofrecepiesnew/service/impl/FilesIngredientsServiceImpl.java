@@ -1,12 +1,14 @@
 package me.fevralev.bookofrecepiesnew.service.impl;
 
 import me.fevralev.bookofrecepiesnew.exception.FileReadException;
+import me.fevralev.bookofrecepiesnew.exception.FileUploadException;
 import me.fevralev.bookofrecepiesnew.exception.FileWriteException;
 import me.fevralev.bookofrecepiesnew.service.FilesService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -49,6 +51,28 @@ public class FilesIngredientsServiceImpl implements FilesService {
         } catch (IOException e) {
             e.printStackTrace();
             return false;
+        }
+    }
+
+    @Override
+    public File getDataFile() {
+        return null;
+    }
+
+    @Override
+    public void uploadFile(MultipartFile file) {
+        Path filePath = Path.of(dataFilePath, dataFileName);
+        try (
+                InputStream is = file.getInputStream();
+                OutputStream os = Files.newOutputStream(filePath);
+                BufferedInputStream bis = new BufferedInputStream(is, 1024);
+                BufferedOutputStream bos = new BufferedOutputStream(os, 1024);
+        ) {
+            Files.createDirectories(filePath.getParent());
+            Files.deleteIfExists(filePath);
+            bis.transferTo(bos);
+        } catch (IOException e) {
+            throw new FileUploadException();
         }
     }
 }
