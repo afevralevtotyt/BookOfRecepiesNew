@@ -6,6 +6,8 @@ import me.fevralev.bookofrecepiesnew.exception.FileDownloadException;
 import me.fevralev.bookofrecepiesnew.exception.FileUploadException;
 import me.fevralev.bookofrecepiesnew.service.impl.FilesIngredientsServiceImpl;
 import me.fevralev.bookofrecepiesnew.service.impl.FilesRecipesServiceImpl;
+import me.fevralev.bookofrecepiesnew.service.impl.IngredientServiceImpl;
+import me.fevralev.bookofrecepiesnew.service.impl.RecipeServiceImpl;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -23,10 +25,15 @@ import java.io.IOException;
 public class FilesController {
     final private FilesRecipesServiceImpl filesService;
     final private FilesIngredientsServiceImpl filesIngredientsService;
+    final private RecipeServiceImpl recipeService;
+    final private IngredientServiceImpl ingredientService;
 
-    public FilesController(FilesRecipesServiceImpl filesService, FilesIngredientsServiceImpl filesIngredientsService) {
+
+    public FilesController(FilesRecipesServiceImpl filesService, FilesIngredientsServiceImpl filesIngredientsService, RecipeServiceImpl recipeService, IngredientServiceImpl ingredientService) {
         this.filesService = filesService;
         this.filesIngredientsService = filesIngredientsService;
+        this.recipeService = recipeService;
+        this.ingredientService = ingredientService;
     }
 
     @Tag(name = "Выгрузить рецепты из файла JSON")
@@ -36,6 +43,7 @@ public class FilesController {
 
         try {
             filesService.uploadFile(file);
+            recipeService.readFromFile();
         } catch (IOException e) {
             throw new FileUploadException();
         }
@@ -49,6 +57,7 @@ public class FilesController {
 
         try {
             filesIngredientsService.uploadFile(file);
+            ingredientService.readFromFile();
         } catch (IOException e) {
             throw new FileUploadException();
         }

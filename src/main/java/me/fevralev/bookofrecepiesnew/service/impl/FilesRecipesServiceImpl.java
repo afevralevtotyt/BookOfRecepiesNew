@@ -69,7 +69,6 @@ public class FilesRecipesServiceImpl implements FilesService {
                 BufferedInputStream bis = new BufferedInputStream(is, 1024);
                 BufferedOutputStream bos = new BufferedOutputStream(os, 1024);
         ) {
-
             bis.transferTo(bos);
         } catch (IOException e) {
             throw new FileUploadException();
