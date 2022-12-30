@@ -4,10 +4,10 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import me.fevralev.bookofrecepiesnew.exception.FileDownloadException;
 import me.fevralev.bookofrecepiesnew.exception.FileUploadException;
-import me.fevralev.bookofrecepiesnew.service.impl.FilesIngredientsServiceImpl;
-import me.fevralev.bookofrecepiesnew.service.impl.FilesRecipesServiceImpl;
+import me.fevralev.bookofrecepiesnew.service.FilesService;
 import me.fevralev.bookofrecepiesnew.service.impl.IngredientService;
 import me.fevralev.bookofrecepiesnew.service.impl.RecipeService;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -23,15 +23,18 @@ import java.io.IOException;
 @RestController
 @RequestMapping("/files/")
 public class FilesController {
-    final private FilesRecipesServiceImpl filesRecipesService;
-    final private FilesIngredientsServiceImpl filesIngredientsService;
+    final private FilesService filesRecipesService;
+    final private FilesService filesIngredientsService;
     final private RecipeService recipeService;
     final private IngredientService ingredientService;
 
 
-    public FilesController(FilesRecipesServiceImpl filesService, FilesIngredientsServiceImpl filesIngredientsService, FilesIngredientsServiceImpl filesIngredientsService1, RecipeService recipeService, IngredientService ingredientService) {
-        this.filesRecipesService = filesService;
-        this.filesIngredientsService = filesIngredientsService1;
+    public FilesController(@Qualifier("filesRecipesServiceImpl") FilesService filesRecipesService,
+                           @Qualifier("filesIngredientsServiceImpl") FilesService filesIngredientsService,
+                           RecipeService recipeService,
+                           IngredientService ingredientService) {
+        this.filesRecipesService = filesRecipesService;
+        this.filesIngredientsService = filesIngredientsService;
         this.recipeService = recipeService;
         this.ingredientService = ingredientService;
     }
@@ -70,17 +73,18 @@ public class FilesController {
     public ResponseEntity<InputStreamResource> downloadDataFile() {
         File file = filesRecipesService.getDataFile();
         if (file.exists()) {
-            InputStreamResource inputStreamResource;
             try {
+                InputStreamResource inputStreamResource;
                 inputStreamResource = new InputStreamResource(new FileInputStream(file));
+                return ResponseEntity.ok()
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .contentLength(file.length())
+                        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"recipesData.json\"")
+                        .body(inputStreamResource);
+
             } catch (FileNotFoundException e) {
                 throw new FileDownloadException();
             }
-            return ResponseEntity.ok()
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .contentLength(file.length())
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"recipesData.json\"")
-                    .body(inputStreamResource);
         }
         return ResponseEntity.noContent().build();
     }
