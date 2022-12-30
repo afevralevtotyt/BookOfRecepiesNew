@@ -7,27 +7,40 @@ import me.fevralev.bookofrecepiesnew.exception.FileReadException;
 import me.fevralev.bookofrecepiesnew.exception.FileWriteException;
 import me.fevralev.bookofrecepiesnew.model.Ingredient;
 import me.fevralev.bookofrecepiesnew.model.Recipe;
+import me.fevralev.bookofrecepiesnew.service.FilesService;
+import me.fevralev.bookofrecepiesnew.service.RecipeService;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.support.PagedListHolder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.io.IOException;
+import java.io.Writer;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.util.*;
 
 @Service
-public class RecipeService implements me.fevralev.bookofrecepiesnew.service.RecipeService {
-    final private FilesRecipesServiceImpl filesRecipesService;
+public class RecipeServiceImpl implements RecipeService {
+    final private FilesService filesRecipesService;
     private int id = 0;
     private Map<Integer, Recipe> recipeBook = new HashMap<>();
 
-    public RecipeService(FilesRecipesServiceImpl filesRecipesService) {
+
+    public RecipeServiceImpl(@Qualifier("filesRecipesServiceImpl") FilesService filesRecipesService) {
         this.filesRecipesService = filesRecipesService;
     }
 
     @PostConstruct
     public void init() {
-        readFromFile();
+        try {
+            readFromFile();
+        } catch (FileReadException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -78,7 +91,7 @@ public class RecipeService implements me.fevralev.bookofrecepiesnew.service.Reci
     @Override
     public HashSet<Recipe> getRecipeByIngredientId(int id) {
         HashSet<Recipe> list = new HashSet<>();
-        Ingredient ingredient = IngredientService.ingredientBook.get(id);
+        Ingredient ingredient = IngredientServiceImpl.ingredientBook.get(id);
         for (Recipe recipe : recipeBook.values()) {
             for (Ingredient ingredientFromRecipe : recipe.getIngredients()) {
                 if (StringUtils.compare(ingredientFromRecipe.getTitle(), (ingredient.getTitle())) == 0) {
@@ -122,6 +135,29 @@ public class RecipeService implements me.fevralev.bookofrecepiesnew.service.Reci
             throw new FileReadException("Ошибка чтения файла");
 
         }
+    }
+
+    @Override
+    public Path createRecipesFile() throws IOException {
+        Path path = filesRecipesService.createTempFile("recipes");
+        for (Recipe value : recipeBook.values()) {
+            try (Writer writer = Files.newBufferedWriter(path, StandardOpenOption.APPEND)) {
+
+                String ingredients = Arrays.toString(value.getIngredients())
+                        .replace("[", "  ")
+                        .replace("]", "")
+                        .replace(',', ' ');
+                int i = 1;
+                StringBuilder steps = new StringBuilder();
+                for (String val : value.getSteps()
+                ) {
+                    steps.append(i++).append(". " + val + "\n");
+                }
+                writer.append(value.getTitle().toUpperCase() + "\nИнгредиенты:\n" + ingredients + "\nИнструкция приготовления:\n" + steps);
+                writer.append("\n");
+            }
+        }
+        return path;
     }
 
 

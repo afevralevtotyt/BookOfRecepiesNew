@@ -72,7 +72,15 @@ public class FilesRecipesServiceImpl implements me.fevralev.bookofrecepiesnew.se
             bis.transferTo(bos);
         } catch (IOException e) {
             throw new FileUploadException();
+        }}
+
+        @Override
+        public Path createTempFile (String suffix){
+            try {
+                return Files.createTempFile(Path.of(dataFilePath), "tempFile", suffix);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
-}
 

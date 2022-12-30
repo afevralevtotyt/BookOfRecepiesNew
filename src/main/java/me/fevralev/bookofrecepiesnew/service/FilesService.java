@@ -4,6 +4,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 
 public interface FilesService {
 
@@ -16,6 +17,8 @@ public interface FilesService {
     File getDataFile();
 
     void uploadFile(MultipartFile file) throws IOException;
+
+    Path createTempFile(String suffix);
 }
 
 

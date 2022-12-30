@@ -11,8 +11,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import me.fevralev.bookofrecepiesnew.model.Ingredient;
 import me.fevralev.bookofrecepiesnew.model.Recipe;
-import me.fevralev.bookofrecepiesnew.service.impl.IngredientService;
-import me.fevralev.bookofrecepiesnew.service.impl.RecipeService;
+import me.fevralev.bookofrecepiesnew.service.IngredientService;
+import me.fevralev.bookofrecepiesnew.service.RecipeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -161,5 +161,4 @@ public class RecipesController {
         }
         return ResponseEntity.ok("Объект удален");
     }
-
 }

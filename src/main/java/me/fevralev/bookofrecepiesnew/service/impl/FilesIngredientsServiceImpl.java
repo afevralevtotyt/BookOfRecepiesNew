@@ -79,4 +79,9 @@ public class FilesIngredientsServiceImpl implements FilesService {
             throw new FileUploadException();
         }
     }
+
+    @Override
+    public Path createTempFile(String suffix) {
+        return null;
+    }
 }

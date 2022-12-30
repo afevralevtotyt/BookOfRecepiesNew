@@ -6,7 +6,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import me.fevralev.bookofrecepiesnew.exception.FileReadException;
 import me.fevralev.bookofrecepiesnew.exception.FileWriteException;
 import me.fevralev.bookofrecepiesnew.model.Ingredient;
+import me.fevralev.bookofrecepiesnew.service.FilesService;
+import me.fevralev.bookofrecepiesnew.service.IngredientService;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.support.PagedListHolder;
 import org.springframework.stereotype.Service;
 
@@ -17,21 +20,24 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class IngredientService implements me.fevralev.bookofrecepiesnew.service.IngredientService {
-    final private FilesIngredientsServiceImpl filesIngredientsService;
+public class IngredientServiceImpl implements IngredientService {
+    final private FilesService filesIngredientsService;
     private int id = 0;
     public static Map<Integer, Ingredient> ingredientBook = new HashMap<>();
 
-    public IngredientService(FilesIngredientsServiceImpl filesIngredientsService) {
+    public IngredientServiceImpl(@Qualifier("filesIngredientsServiceImpl")FilesService filesIngredientsService) {
         this.filesIngredientsService = filesIngredientsService;
     }
 
     @PostConstruct
-    private void init() {
-        readFromFile();
+    public void init() {
+        try {
+            readFromFile();
+        }
+        catch (FileReadException e){
+            e.printStackTrace();
+        }
     }
-
-    @Override
     public Ingredient add(Ingredient ingr) {
         if (StringUtils.isNotEmpty(ingr.getTitle()) && StringUtils.isNotEmpty(ingr.getMeasureUnit()) && ingr.getCount() > 0) {
             ingredientBook.put(id++, ingr);
