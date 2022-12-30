@@ -7,7 +7,6 @@ import me.fevralev.bookofrecepiesnew.exception.FileReadException;
 import me.fevralev.bookofrecepiesnew.exception.FileWriteException;
 import me.fevralev.bookofrecepiesnew.model.Ingredient;
 import me.fevralev.bookofrecepiesnew.model.Recipe;
-import me.fevralev.bookofrecepiesnew.service.RecipeService;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.support.PagedListHolder;
@@ -17,12 +16,12 @@ import javax.annotation.PostConstruct;
 import java.util.*;
 
 @Service
-public class RecipeServiceImpl implements RecipeService {
+public class RecipeService implements me.fevralev.bookofrecepiesnew.service.RecipeService {
     final private FilesRecipesServiceImpl filesRecipesService;
     private int id = 0;
     private Map<Integer, Recipe> recipeBook = new HashMap<>();
 
-    public RecipeServiceImpl(FilesRecipesServiceImpl filesRecipesService) {
+    public RecipeService(FilesRecipesServiceImpl filesRecipesService) {
         this.filesRecipesService = filesRecipesService;
     }
 
@@ -79,7 +78,7 @@ public class RecipeServiceImpl implements RecipeService {
     @Override
     public HashSet<Recipe> getRecipeByIngredientId(int id) {
         HashSet<Recipe> list = new HashSet<>();
-        Ingredient ingredient = IngredientServiceImpl.ingredientBook.get(id);
+        Ingredient ingredient = IngredientService.ingredientBook.get(id);
         for (Recipe recipe : recipeBook.values()) {
             for (Ingredient ingredientFromRecipe : recipe.getIngredients()) {
                 if (StringUtils.compare(ingredientFromRecipe.getTitle(), (ingredient.getTitle())) == 0) {
@@ -124,6 +123,7 @@ public class RecipeServiceImpl implements RecipeService {
 
         }
     }
+
 
 }
 
