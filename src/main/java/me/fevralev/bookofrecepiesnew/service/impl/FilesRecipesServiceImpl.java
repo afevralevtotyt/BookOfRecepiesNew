@@ -19,6 +19,8 @@ public class FilesRecipesServiceImpl implements me.fevralev.bookofrecepiesnew.se
     private String dataFilePath;
     @Value("${name.of.recipes.data.file}")
     private String dataFileName;
+    @Value("${path.to.temp.files}")
+    private String tempFilesPath;
     @Value("${kByte}")
     private int KBYTE;
     @Override
@@ -77,7 +79,7 @@ public class FilesRecipesServiceImpl implements me.fevralev.bookofrecepiesnew.se
         @Override
         public Path createTempFile (String suffix){
             try {
-                return Files.createTempFile(Path.of(dataFilePath), "tempFile", suffix);
+                return Files.createTempFile(Path.of(tempFilesPath), "tempFile", suffix);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
