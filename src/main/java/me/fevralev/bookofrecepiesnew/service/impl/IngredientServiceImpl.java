@@ -89,7 +89,7 @@ public class IngredientServiceImpl implements IngredientService {
             filesIngredientsService.saveToFile(json);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
-            throw new FileWriteException("Ошибка записи в файл");
+            throw new FileWriteException();
         }
     }
 
@@ -100,7 +100,7 @@ public class IngredientServiceImpl implements IngredientService {
             ingredientBook = new ObjectMapper().readValue(json, new TypeReference<HashMap<Integer, Ingredient>>() {
             });
         } catch (JsonProcessingException e) {
-            throw new FileReadException("Ошибка чтения файла");
+            throw new FileReadException();
         }
     }
 }

@@ -31,7 +31,7 @@ public class FilesRecipesServiceImpl implements me.fevralev.bookofrecepiesnew.se
             return true;
         } catch (IOException e) {
             e.printStackTrace();
-            throw new FileWriteException("Ошибка записи в файл");
+            throw new FileWriteException();
         }
     }
 
@@ -40,7 +40,7 @@ public class FilesRecipesServiceImpl implements me.fevralev.bookofrecepiesnew.se
         try {
             return Files.readString(Path.of(dataFilePath, dataFileName));
         } catch (IOException e) {
-            throw new FileReadException("Ошибка чтения файла");
+            throw new FileReadException();
         }
     }
 

@@ -46,7 +46,7 @@ public class IngredientsController {
     @PostMapping
     public ResponseEntity createIngredient(@RequestBody Ingredient ingredient) {
         if (ingredient.getTitle().isEmpty()||ingredient.getCount()==0||ingredient.getMeasureUnit().isEmpty()){
-            return ResponseEntity.badRequest().body("Невреные параметры запроса");
+            return ResponseEntity.badRequest().body("Неверные параметры запроса");
         }
         Ingredient createdRecipe = ingredientService.add(ingredient);
         if (createdRecipe == null) {

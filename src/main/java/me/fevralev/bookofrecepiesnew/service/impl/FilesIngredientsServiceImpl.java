@@ -32,7 +32,7 @@ public class FilesIngredientsServiceImpl implements FilesService {
             return true;
         } catch (IOException e) {
             e.printStackTrace();
-            throw new FileWriteException("Ошибка записи в файл");
+            throw new FileWriteException();
         }
     }
 
@@ -41,7 +41,7 @@ public class FilesIngredientsServiceImpl implements FilesService {
         try {
             return Files.readString(Path.of(dataFilePath, dataFileName));
         } catch (IOException e) {
-            throw new FileReadException("Ошибка чтения файла");
+            throw new FileReadException();
         }
     }
 

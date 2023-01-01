@@ -120,7 +120,7 @@ public class RecipeServiceImpl implements RecipeService {
             filesRecipesService.saveToFile(json);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
-            throw new FileWriteException("Ошибка записи в файл");
+            throw new FileWriteException();
         }
     }
 
@@ -132,7 +132,7 @@ public class RecipeServiceImpl implements RecipeService {
             });
         } catch (JsonProcessingException e) {
             e.printStackTrace();
-            throw new FileReadException("Ошибка чтения файла");
+            throw new FileReadException();
 
         }
     }

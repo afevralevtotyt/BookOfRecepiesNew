@@ -6,7 +6,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import me.fevralev.bookofrecepiesnew.exception.FileDownloadException;
-import me.fevralev.bookofrecepiesnew.exception.FileReadException;
 import me.fevralev.bookofrecepiesnew.exception.FileUploadException;
 import me.fevralev.bookofrecepiesnew.service.FilesService;
 import me.fevralev.bookofrecepiesnew.service.impl.IngredientServiceImpl;
@@ -85,7 +84,7 @@ public class FilesController {
             )),
             @ApiResponse(
                     responseCode = "500",
-                    description = "Ошибка чтения файла"
+                    description = "Ошибка выгрузки файла"
             )
     })
     public ResponseEntity<String> uploadIngredients(@RequestParam MultipartFile file) {
@@ -93,11 +92,8 @@ public class FilesController {
         try {
             filesIngredientsService.uploadFile(file);
             ingredientService.readFromFile();
-        } catch (IOException e) { try{
-            throw new FileUploadException();}
-        catch (FileUploadException exception){
-            return ResponseEntity.internalServerError().body(exception.toString());
-        }
+        } catch (IOException e) {
+            throw new FileUploadException();
         }
         return ResponseEntity.ok().build();
     }
@@ -111,6 +107,10 @@ public class FilesController {
                     description = "Файл для загрузки готов", content = @Content(
                     mediaType = "application/json"
             )),
+            @ApiResponse(
+                    responseCode = "204",
+                    description = "Нет контента"
+            ),
             @ApiResponse(
                     responseCode = "500",
                     description = "Ошибка скачивания файла"
@@ -129,11 +129,7 @@ public class FilesController {
                         .body(inputStreamResource);
 
             } catch (FileNotFoundException e) {
-                try {
                     throw new FileDownloadException();
-                } catch (FileReadException exception) {
-                    return ResponseEntity.internalServerError().body(exception.toString());
-                }
             }
         }
         return ResponseEntity.noContent().build();
@@ -147,6 +143,10 @@ public class FilesController {
                     description = "Файл для загрузки готов", content = @Content(
                     mediaType = "application/json"
             )),
+            @ApiResponse(
+                    responseCode = "204",
+                    description = "Ошибка скачивания файла"
+            ),
             @ApiResponse(
                     responseCode = "500",
                     description = "Ошибка скачивания файла"
@@ -166,8 +166,7 @@ public class FilesController {
                     .body(inputStreamResource);
 
         } catch (IOException e) {
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().body(e.toString());
+            throw new FileDownloadException();
         }
 
     }
