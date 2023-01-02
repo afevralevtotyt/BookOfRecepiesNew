@@ -25,7 +25,7 @@ public class IngredientServiceImpl implements IngredientService {
     private int id = 0;
     public static Map<Integer, Ingredient> ingredientBook = new HashMap<>();
 
-    public IngredientServiceImpl(@Qualifier("filesIngredientsServiceImpl")FilesService filesIngredientsService) {
+    public IngredientServiceImpl(@Qualifier("filesIngredientsServiceImpl") FilesService filesIngredientsService) {
         this.filesIngredientsService = filesIngredientsService;
     }
 
@@ -33,11 +33,11 @@ public class IngredientServiceImpl implements IngredientService {
     public void init() {
         try {
             readFromFile();
-        }
-        catch (FileReadException e){
+        } catch (FileReadException e) {
             e.printStackTrace();
         }
     }
+
     public Ingredient add(Ingredient ingr) {
         if (StringUtils.isNotEmpty(ingr.getTitle()) && StringUtils.isNotEmpty(ingr.getMeasureUnit()) && ingr.getCount() > 0) {
             ingredientBook.put(id++, ingr);
@@ -89,7 +89,7 @@ public class IngredientServiceImpl implements IngredientService {
             filesIngredientsService.saveToFile(json);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
-            throw new FileWriteException();
+            throw new FileWriteException("Ошибка выгрузки файла");
         }
     }
 
@@ -100,7 +100,7 @@ public class IngredientServiceImpl implements IngredientService {
             ingredientBook = new ObjectMapper().readValue(json, new TypeReference<HashMap<Integer, Ingredient>>() {
             });
         } catch (JsonProcessingException e) {
-            throw new FileReadException();
+            throw new FileReadException("Ошибка чтения файла");
         }
     }
 }

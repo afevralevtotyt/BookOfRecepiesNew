@@ -8,8 +8,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import me.fevralev.bookofrecepiesnew.exception.FileDownloadException;
 import me.fevralev.bookofrecepiesnew.exception.FileUploadException;
 import me.fevralev.bookofrecepiesnew.service.FilesService;
-import me.fevralev.bookofrecepiesnew.service.impl.IngredientServiceImpl;
-import me.fevralev.bookofrecepiesnew.service.impl.RecipeServiceImpl;
+import me.fevralev.bookofrecepiesnew.service.IngredientService;
+import me.fevralev.bookofrecepiesnew.service.RecipeService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -30,14 +30,14 @@ import java.nio.file.Path;
 public class FilesController {
     final private FilesService filesRecipesService;
     final private FilesService filesIngredientsService;
-    final private RecipeServiceImpl recipeService;
-    final private IngredientServiceImpl ingredientService;
+    final private RecipeService recipeService;
+    final private IngredientService ingredientService;
 
 
     public FilesController(@Qualifier("filesRecipesServiceImpl") FilesService filesRecipesService,
                            @Qualifier("filesIngredientsServiceImpl") FilesService filesIngredientsService,
-                           RecipeServiceImpl recipeService,
-                           IngredientServiceImpl ingredientService) {
+                           RecipeService recipeService,
+                           IngredientService ingredientService) {
         this.filesRecipesService = filesRecipesService;
         this.filesIngredientsService = filesIngredientsService;
         this.recipeService = recipeService;
@@ -63,13 +63,10 @@ public class FilesController {
         try {
             filesRecipesService.uploadFile(file);
             recipeService.readFromFile();
-        } catch (IOException e) { try{
-            throw new FileUploadException();
-        }catch (FileUploadException exception) {
-            return ResponseEntity.internalServerError().body(exception.toString());
+        } catch (IOException e) {
+            throw new FileUploadException("Ошибка выгрузки файла");
         }
 
-        }
         return ResponseEntity.ok().build();
     }
 
@@ -93,7 +90,7 @@ public class FilesController {
             filesIngredientsService.uploadFile(file);
             ingredientService.readFromFile();
         } catch (IOException e) {
-            throw new FileUploadException();
+            throw new FileUploadException("Ошибка выгрузки файла");
         }
         return ResponseEntity.ok().build();
     }
@@ -129,7 +126,7 @@ public class FilesController {
                         .body(inputStreamResource);
 
             } catch (FileNotFoundException e) {
-                    throw new FileDownloadException();
+                    throw new FileDownloadException("Ошибка скачивания файла");
             }
         }
         return ResponseEntity.noContent().build();
@@ -159,6 +156,7 @@ public class FilesController {
                 return ResponseEntity.noContent().build();
             }
             InputStreamResource inputStreamResource = new InputStreamResource(new FileInputStream(path.toFile()));
+
             return ResponseEntity.ok()
                     .contentType(MediaType.TEXT_PLAIN)
                     .contentLength(Files.size(path))
@@ -166,7 +164,7 @@ public class FilesController {
                     .body(inputStreamResource);
 
         } catch (IOException e) {
-            throw new FileDownloadException();
+            throw new FileDownloadException("Ошибка скачивания файла");
         }
 
     }

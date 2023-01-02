@@ -23,6 +23,7 @@ public class FilesRecipesServiceImpl implements me.fevralev.bookofrecepiesnew.se
     private String tempFilesPath;
     @Value("${kByte}")
     private int KBYTE;
+
     @Override
     public boolean saveToFile(String json) {
         try {
@@ -31,7 +32,7 @@ public class FilesRecipesServiceImpl implements me.fevralev.bookofrecepiesnew.se
             return true;
         } catch (IOException e) {
             e.printStackTrace();
-            throw new FileWriteException();
+            throw new FileWriteException("Ошибка выгрузки файла");
         }
     }
 
@@ -40,7 +41,7 @@ public class FilesRecipesServiceImpl implements me.fevralev.bookofrecepiesnew.se
         try {
             return Files.readString(Path.of(dataFilePath, dataFileName));
         } catch (IOException e) {
-            throw new FileReadException();
+            throw new FileReadException("Ошибка чтения файла");
         }
     }
 
@@ -56,10 +57,12 @@ public class FilesRecipesServiceImpl implements me.fevralev.bookofrecepiesnew.se
             return false;
         }
     }
+
     @Override
-    public File getDataFile(){
-        return new File(dataFilePath+"/"+dataFileName);
+    public File getDataFile() {
+        return new File(dataFilePath + "/" + dataFileName);
     }
+
     @Override
     public void uploadFile(MultipartFile file) throws IOException {
         Path filePath = Path.of(dataFilePath, dataFileName);
@@ -73,16 +76,17 @@ public class FilesRecipesServiceImpl implements me.fevralev.bookofrecepiesnew.se
         ) {
             bis.transferTo(bos);
         } catch (IOException e) {
-            throw new FileUploadException();
-        }}
-
-        @Override
-        public Path createTempFile (String suffix){
-            try {
-                return Files.createTempFile(Path.of(tempFilesPath), "tempFile", suffix);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            throw new FileUploadException("Ошибка выгрузки файла");
         }
     }
+
+    @Override
+    public Path createTempFile(String suffix) {
+        try {
+            return Files.createTempFile(Path.of(tempFilesPath), "tempFile", suffix);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
 

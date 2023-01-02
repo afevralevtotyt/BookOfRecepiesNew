@@ -17,7 +17,7 @@ public class Recipe {
 
     @Override
     public String toString() {
-        return title + ": \n" + "Время приготовления: "+cookingTime+"\n"+"Ингредиенты:\n"+
+        return title + ": \n" + "Время приготовления: " + cookingTime + "\n" + "Ингредиенты:\n" +
                 Arrays.toString(ingredients) +
                 Arrays.toString(steps);
     }

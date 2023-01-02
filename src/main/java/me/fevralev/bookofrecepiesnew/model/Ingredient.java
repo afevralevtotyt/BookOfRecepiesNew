@@ -13,7 +13,7 @@ public class Ingredient {
 
     @Override
     public String toString() {
-        return  "·" +title + "-" + count +" "+
-                measureUnit +"\n";
+        return "·" + title + "-" + count + " " +
+                measureUnit + "\n";
     }
 }

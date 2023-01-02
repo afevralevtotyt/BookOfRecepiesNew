@@ -120,7 +120,7 @@ public class RecipeServiceImpl implements RecipeService {
             filesRecipesService.saveToFile(json);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
-            throw new FileWriteException();
+            throw new FileWriteException("Ошибка выгрузки файла");
         }
     }
 
@@ -132,7 +132,7 @@ public class RecipeServiceImpl implements RecipeService {
             });
         } catch (JsonProcessingException e) {
             e.printStackTrace();
-            throw new FileReadException();
+            throw new FileReadException("Ошибка чтения файла");
 
         }
     }
@@ -142,7 +142,6 @@ public class RecipeServiceImpl implements RecipeService {
         Path path = filesRecipesService.createTempFile("recipes");
         for (Recipe value : recipeBook.values()) {
             try (Writer writer = Files.newBufferedWriter(path, StandardOpenOption.APPEND)) {
-
                 String ingredients = Arrays.toString(value.getIngredients())
                         .replace("[", "  ")
                         .replace("]", "")

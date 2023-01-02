@@ -45,7 +45,7 @@ public class IngredientsController {
     })
     @PostMapping
     public ResponseEntity createIngredient(@RequestBody Ingredient ingredient) {
-        if (ingredient.getTitle().isEmpty()||ingredient.getCount()==0||ingredient.getMeasureUnit().isEmpty()){
+        if (ingredient.getTitle().isEmpty() || ingredient.getCount() == 0 || ingredient.getMeasureUnit().isEmpty()) {
             return ResponseEntity.badRequest().body("Неверные параметры запроса");
         }
         Ingredient createdRecipe = ingredientService.add(ingredient);
@@ -75,7 +75,7 @@ public class IngredientsController {
     @GetMapping("{id}")
     public ResponseEntity getIngredientById(@PathVariable int id) {
         Ingredient ingredient = ingredientService.getById(id);
-        if (id<0){
+        if (id < 0) {
             return ResponseEntity.badRequest().body("Неверные параметры запроса");
         }
         if (ingredient == null) {
@@ -101,8 +101,8 @@ public class IngredientsController {
             @Parameter(example = "5", name = "count", description = "Количество ингредиентов на странице")})
     @GetMapping
     public ResponseEntity<Object> getAll(@RequestParam(defaultValue = "0") int page,
-                                                   @RequestParam(defaultValue = "5") int count) {
-        if(page<0||count<1){
+                                         @RequestParam(defaultValue = "5") int count) {
+        if (page < 0 || count < 1) {
             return ResponseEntity.badRequest().body("Неверные параметры запроса");
         }
         List<Ingredient> list = ingredientService.getAll(page, count);
@@ -130,7 +130,7 @@ public class IngredientsController {
     @PutMapping("{id}")
     public ResponseEntity edit(@PathVariable int id, @RequestBody Ingredient ingredient) {
         Ingredient editedIngredient = ingredientService.edit(id, ingredient);
-        if (ingredient.getTitle().isEmpty()||ingredient.getCount()==0||ingredient.getMeasureUnit().isEmpty()){
+        if (ingredient.getTitle().isEmpty() || ingredient.getCount() == 0 || ingredient.getMeasureUnit().isEmpty()) {
             return ResponseEntity.badRequest().body("Невреные параметры запроса");
         }
         if (editedIngredient == null) {

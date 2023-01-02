@@ -11,7 +11,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import me.fevralev.bookofrecepiesnew.model.Ingredient;
 import me.fevralev.bookofrecepiesnew.model.Recipe;
-import me.fevralev.bookofrecepiesnew.service.IngredientService;
 import me.fevralev.bookofrecepiesnew.service.RecipeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +22,7 @@ import java.util.List;
 public class RecipesController {
     private final RecipeService recipeService;
 
-    public RecipesController(RecipeService recipeService, IngredientService ingredientService) {
+    public RecipesController(RecipeService recipeService) {
         this.recipeService = recipeService;
     }
 
@@ -48,7 +47,7 @@ public class RecipesController {
     @PostMapping
     public ResponseEntity createRecipe(@RequestBody Recipe recipe) {
         Recipe createdRecipe = recipeService.add(recipe);
-        if (recipe.getTitle().isEmpty()||recipe.getIngredients().length==0||recipe.getSteps().length==0) {
+        if (recipe.getTitle().isEmpty() || recipe.getIngredients().length == 0 || recipe.getSteps().length == 0) {
             return ResponseEntity.badRequest().body("Ошибка в параметрах запроса");
         }
         if (createdRecipe != null) {
@@ -125,8 +124,8 @@ public class RecipesController {
             @Parameter(example = "5", name = "count", description = "Количество рецептов на странице")})
     @GetMapping
     public ResponseEntity<Object> getAll(@RequestParam(defaultValue = "0") int page,
-                                               @RequestParam(defaultValue = "5") int count) {
-        if (page<0|| count<1){
+                                         @RequestParam(defaultValue = "5") int count) {
+        if (page < 0 || count < 1) {
             return ResponseEntity.badRequest().body("Ошибка в параметрах запроса");
         }
         List<Recipe> result = recipeService.getAll(page, count);
@@ -159,7 +158,7 @@ public class RecipesController {
         if (editedRecipe == null) {
             return ResponseEntity.notFound().build();
         }
-        if (recipe.getTitle().isEmpty()||recipe.getIngredients().length==0||recipe.getSteps().length==0){
+        if (recipe.getTitle().isEmpty() || recipe.getIngredients().length == 0 || recipe.getSteps().length == 0) {
             return ResponseEntity.badRequest().body("Ошибка в параметрах запроса");
         }
         return ResponseEntity.ok(editedRecipe);
