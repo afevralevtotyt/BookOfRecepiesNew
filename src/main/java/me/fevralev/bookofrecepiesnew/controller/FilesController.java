@@ -137,9 +137,8 @@ public class FilesController {
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
-                    description = "Файл для загрузки готов", content = @Content(
-                    mediaType = "application/json"
-            )),
+                    description = "Файл для загрузки готов"
+            ),
             @ApiResponse(
                     responseCode = "204",
                     description = "Ошибка скачивания файла"
