@@ -36,12 +36,18 @@ public class IngredientsController {
                     array = @ArraySchema(schema = @Schema(implementation = Ingredient.class))
             )),
             @ApiResponse(
+                    responseCode = "400",
+                    description = "Неверные параметры запроса"),
+            @ApiResponse(
                     responseCode = "404",
                     description = "Ошибка ввода"
             )
     })
     @PostMapping
     public ResponseEntity createIngredient(@RequestBody Ingredient ingredient) {
+        if (ingredient.getTitle().isEmpty() || ingredient.getCount() == 0 || ingredient.getMeasureUnit().isEmpty()) {
+            return ResponseEntity.badRequest().body("Неверные параметры запроса");
+        }
         Ingredient createdRecipe = ingredientService.add(ingredient);
         if (createdRecipe == null) {
             return ResponseEntity.notFound().build();
@@ -59,13 +65,19 @@ public class IngredientsController {
                     mediaType = "application/json"
             )),
             @ApiResponse(
+                    responseCode = "400",
+                    description = "Неверные параметры запроса"),
+            @ApiResponse(
                     responseCode = "404",
-                    description = "Ошибка ввода")
+                    description = "Ингредиент не найден")
     })
     @Parameters(value = {@Parameter(example = "0", name = "id", description = "ID ингредиента в книге")})
     @GetMapping("{id}")
     public ResponseEntity getIngredientById(@PathVariable int id) {
         Ingredient ingredient = ingredientService.getById(id);
+        if (id < 0) {
+            return ResponseEntity.badRequest().body("Неверные параметры запроса");
+        }
         if (ingredient == null) {
             return ResponseEntity.notFound().build();
         }
@@ -79,13 +91,20 @@ public class IngredientsController {
                     responseCode = "200",
                     description = "Успех", content = @Content(
                     mediaType = "application/json"
-            ))
+            )),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Невреные параметры запроса"
+            )
     })
     @Parameters(value = {@Parameter(example = "0", name = "page", description = "Номер страницы"),
             @Parameter(example = "5", name = "count", description = "Количество ингредиентов на странице")})
     @GetMapping
-    public ResponseEntity<List<Ingredient>> getAll(@RequestParam(defaultValue = "0") int page,
-                                                   @RequestParam(defaultValue = "5") int count) {
+    public ResponseEntity<Object> getAll(@RequestParam(defaultValue = "0") int page,
+                                         @RequestParam(defaultValue = "5") int count) {
+        if (page < 0 || count < 1) {
+            return ResponseEntity.badRequest().body("Неверные параметры запроса");
+        }
         List<Ingredient> list = ingredientService.getAll(page, count);
         return ResponseEntity.ok(list);
     }
@@ -99,6 +118,10 @@ public class IngredientsController {
                     mediaType = "application/json"
             )),
             @ApiResponse(
+                    responseCode = "400",
+                    description = "Невреные параметры запроса"
+            ),
+            @ApiResponse(
                     responseCode = "404",
                     description = "Ингредиент не найден"
             )
@@ -107,6 +130,9 @@ public class IngredientsController {
     @PutMapping("{id}")
     public ResponseEntity edit(@PathVariable int id, @RequestBody Ingredient ingredient) {
         Ingredient editedIngredient = ingredientService.edit(id, ingredient);
+        if (ingredient.getTitle().isEmpty() || ingredient.getCount() == 0 || ingredient.getMeasureUnit().isEmpty()) {
+            return ResponseEntity.badRequest().body("Невреные параметры запроса");
+        }
         if (editedIngredient == null) {
             return ResponseEntity.notFound().build();
         }

@@ -1,9 +1,6 @@
 package me.fevralev.bookofrecepiesnew.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @AllArgsConstructor
@@ -14,4 +11,9 @@ public class Ingredient {
     private int count;
     private String measureUnit;
 
+    @Override
+    public String toString() {
+        return "·" + title + "-" + count + " " +
+                measureUnit + "\n";
+    }
 }

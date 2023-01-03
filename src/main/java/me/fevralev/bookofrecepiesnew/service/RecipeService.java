@@ -4,6 +4,8 @@ package me.fevralev.bookofrecepiesnew.service;
 import me.fevralev.bookofrecepiesnew.model.Ingredient;
 import me.fevralev.bookofrecepiesnew.model.Recipe;
 
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.List;
 
@@ -27,4 +29,6 @@ public interface RecipeService {
     void saveToFile();
 
     void readFromFile();
+
+    Path createRecipesFile() throws IOException;
 }

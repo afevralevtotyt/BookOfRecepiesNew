@@ -32,7 +32,7 @@ public class FilesIngredientsServiceImpl implements FilesService {
             return true;
         } catch (IOException e) {
             e.printStackTrace();
-            throw new FileWriteException("Ошибка записи в файл");
+            throw new FileWriteException("Ошибка выгрузки файла");
         }
     }
 
@@ -76,7 +76,12 @@ public class FilesIngredientsServiceImpl implements FilesService {
         ) {
             bis.transferTo(bos);
         } catch (IOException e) {
-            throw new FileUploadException();
+            throw new FileUploadException("Ошибка выгрузки файла");
         }
+    }
+
+    @Override
+    public Path createTempFile(String suffix) {
+        return null;
     }
 }
